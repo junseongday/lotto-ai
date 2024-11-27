@@ -15,7 +15,7 @@ print(f"Number of rows in lotto_data: {lotto_data.shape[0]}")
 print(lotto_data[lotto_data.isnull().any(axis=1)])
 
 # 결측값을 0으로 채우기 (혹은 다른 방법으로 처리)
-lotto_data = lotto_data.fillna(0)
+lotto_data = lotto_data.dropna()
 print(f"Number of rows after filling NA: {lotto_data.shape[0]}")
 
 # 데이터가 비어있는지 확인
@@ -25,7 +25,7 @@ else:
     # 3. 데이터 전처리
     # 입력 데이터 (6개 번호)
     X = lotto_data.iloc[:, :6].values
-
+    print(X)
     # 출력 데이터 (당첨 번호: 모든 번호를 대상으로 확률 계산)
     y = np.concatenate((lotto_data.iloc[:, :6].values, lotto_data.iloc[:, 6:].values), axis=1)
 
