@@ -1,25 +1,31 @@
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
 
-# 모델 로드
-model = tf.keras.models.load_model('lotto_model.h5')
+# 1. 모델 로드
+model = tf.keras.models.load_model('improved_lotto_model.h5')
 
-# 원-핫 인코딩 함수
-def one_hot_encode(data, max_num=45):
-    encoded = np.zeros((1, max_num))  # 1개의 데이터
-    for num in data:
-        encoded[0, num - 1] = 1  # 해당 번호에 1을 할당
-    return encoded
+# 2. 입력 데이터 준비
+# 예: 45개의 번호 중 일부를 원-핫 인코딩 형태로 준비
+input_data = np.zeros((5, 45))  # 5개의 조합 입력 (5 x 45 크기)
 
-# 사용자가 입력한 로또 번호 (예: [1, 3, 5, 7, 10, 13])
-user_input = [1, 3, 5, 7, 10, 13]
+# 입력 데이터를 랜덤하게 선택 (예: 첫 5개의 번호를 고정)
+for i in range(5):  
+    selected_numbers = np.random.choice(range(45), size=6, replace=False)  # 랜덤하게 6개 선택
+    for num in selected_numbers:
+        input_data[i, num] = 1
 
-# 입력 데이터 원-핫 인코딩
-X_user_encoded = one_hot_encode(user_input)
+# 3. 예측 수행
+predictions = model.predict(input_data)
 
-# 예측 수행
-predictions = model.predict(X_user_encoded)
+# 4. 상위 5개의 조합 생성
+top_5_combinations = []
+for i in range(predictions.shape[0]):  # 각 조합에 대해 처리
+    # 상위 6개의 번호 추출
+    top_6_numbers = np.argsort(predictions[i])[-6:] + 1  # 1-based index로 변환
+    top_6_numbers = np.sort(top_6_numbers)  # 번호 정렬
+    top_5_combinations.append(top_6_numbers)
 
-# 예측 결과에서 확률이 가장 높은 6개 번호를 추출
-predicted_numbers = np.argsort(predictions[0])[-6:] + 1  # 가장 높은 확률의 6개 번호
-print("추천 번호:", predicted_numbers)
+# 5. 결과 출력
+print("추천 조합 5개:")
+for idx, combination in enumerate(top_5_combinations):
+    print(f"조합 {idx + 1}: {combination}")
