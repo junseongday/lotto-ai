@@ -86,12 +86,12 @@ print("추천 번호:", predicted_numbers)
 model.save('improved_lotto_model.h5')
 
 # 10. 학습 시각화
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-plt.plot(history.history['accuracy'], label='Training Accuracy')
-plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
-plt.legend()
-plt.title("Model Accuracy")
-plt.xlabel("Epoch")
-plt.ylabel("Accuracy")
-plt.show()
+# plt.plot(history.history['accuracy'], label='Training Accuracy')
+# plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+# plt.legend()
+# plt.title("Model Accuracy")
+# plt.xlabel("Epoch")
+# plt.ylabel("Accuracy")
+# plt.show()
