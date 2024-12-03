@@ -52,10 +52,10 @@ X_train, X_test, y_train, y_test = train_test_split(X_encoded, y_encoded, test_s
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(256, input_dim=X_encoded.shape[1], activation='relu'),
     tf.keras.layers.BatchNormalization(),  # 배치 정규화 추가
-    tf.keras.layers.Dropout(0.3),          # 드롭아웃 추가 (30% 노드 비활성화)
+    tf.keras.layers.Dropout(0.1),          # 드롭아웃 추가 (30% 노드 비활성화)
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.BatchNormalization(),
-    tf.keras.layers.Dropout(0.3),
+    tf.keras.layers.Dropout(0.1),
     tf.keras.layers.Dense(y_encoded.shape[1], activation='softmax')
 ])
 
@@ -69,11 +69,11 @@ model.compile(
 # 7. 모델 학습
 history = model.fit(
     X_train, y_train,
-    epochs=100,  # 학습 반복 횟수 증가
+    epochs=1000,  # 학습 반복 횟수 증가
     batch_size=32,
     validation_data=(X_test, y_test),
     callbacks=[
-        tf.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)  # 과적합 방지
+        tf.keras.callbacks.EarlyStopping(patience=100, restore_best_weights=True)  # 과적합 방지
     ]
 )
 
